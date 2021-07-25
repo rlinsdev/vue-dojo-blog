@@ -9,13 +9,21 @@
 
 <script>
 
-import {computed, ref} from 'vue'
+import {computed, ref, watchEffect} from 'vue'
 
 export default {
   name:'Home',
   setup(){
     const search = ref('')
     const names = ref(['mario','luigi','yoshy' , 'bowser', 'koopa','tody'])
+
+    watch(search,()=>{
+      console.log('a')
+    })
+
+    watchEffect(()=>{
+      console.log()
+    })
 
     const matchingNames = computed(()=>{
       return names.value.filter((name)=>name.includes(search.value))
