@@ -1,35 +1,25 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <input type="text" v-model="search">
-    <p>Search term = {{search}}</p>
-    <div v-for="name in matchingNames" :key="name">{{name}}</div>
+    <PostList :posts="posts" />
   </div>
+  
 </template>
 
 <script>
-
-import {computed, ref, watchEffect} from 'vue'
+import PostList from '../components/PostList.vue'
+import {ref} from 'vue'
 
 export default {
   name:'Home',
-  setup(){
-    const search = ref('')
-    const names = ref(['mario','luigi','yoshy' , 'bowser', 'koopa','tody'])
-
-    watch(search,()=>{
-      console.log('a')
-    })
-
-    watchEffect(()=>{
-      console.log()
-    })
-
-    const matchingNames = computed(()=>{
-      return names.value.filter((name)=>name.includes(search.value))
-    })
-
-      return {names, search, matchingNames}
+  components:{PostList},
+  setup() {
+    const posts = ref([
+      {title:'welcome tho this blog', body:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit aperiam ipsum, error consectetur excepturi ipsa omnis tenetur, illo quos explicabo aspernatur quisquam non ab autem necessitatibus velit hic minima maxime ullam? Quod, praesentium totam, possimus ad quaerat odit deserunt, exercitationem quae inventore eveniet facilis odio non culpa commodi iure id delectus! Corrupti maxime at possimus nisi! Incidunt modi, dignissimos commodi soluta error alias et aperiam labore quas at eligendi molestiae temporibus! Unde, minus dolorum. Ea, nostrum mollitia? Doloremque rem officiis dolorum, quae corrupti harum consequuntur sequi, dolorem doloribus eum nam iure. Commodi modi, voluptatibus iste consequuntur sunt cupiditate possimus natus?', id:1},
+      {title:'top 5 CSS tips', body:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit aperiam ipsum, error consectetur excepturi ipsa omnis tenetur, illo quos explicabo aspernatur quisquam non ab autem necessitatibus velit hic minima maxime ullam? Quod, praesentium totam, possimus ad quaerat odit deserunt, exercitationem quae inventore eveniet facilis odio non culpa commodi iure id delectus! Corrupti maxime at possimus nisi! Incidunt modi, dignissimos commodi soluta error alias et aperiam labore quas at eligendi molestiae temporibus! Unde, minus dolorum. Ea, nostrum mollitia? Doloremque rem officiis dolorum, quae corrupti harum consequuntur sequi, dolorem doloribus eum nam iure. Commodi modi, voluptatibus iste consequuntur sunt cupiditate possimus natus?', id:2},
+    ])
+    return { posts }
+   
   }
 }
 </script>
