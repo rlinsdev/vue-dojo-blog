@@ -1,9 +1,14 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <PostList :posts="posts" />
+    <div v-if="posts.length">
+      <PostList :posts="posts" />
+    </div>
+    <div v-else>
+      <div v-if="error">{{error}}</div>
+      <div v-else>Loading...</div>      
+    </div>    
   </div>
-  
 </template>
 
 <script>
@@ -14,11 +19,27 @@ export default {
   name:'Home',
   components:{PostList},
   setup() {
-    const posts = ref([
-      {title:'welcome tho this blog', body:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit aperiam ipsum, error consectetur excepturi ipsa omnis tenetur, illo quos explicabo aspernatur quisquam non ab autem necessitatibus velit hic minima maxime ullam? Quod, praesentium totam, possimus ad quaerat odit deserunt, exercitationem quae inventore eveniet facilis odio non culpa commodi iure id delectus! Corrupti maxime at possimus nisi! Incidunt modi, dignissimos commodi soluta error alias et aperiam labore quas at eligendi molestiae temporibus! Unde, minus dolorum. Ea, nostrum mollitia? Doloremque rem officiis dolorum, quae corrupti harum consequuntur sequi, dolorem doloribus eum nam iure. Commodi modi, voluptatibus iste consequuntur sunt cupiditate possimus natus?', id:1},
-      {title:'top 5 CSS tips', body:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit aperiam ipsum, error consectetur excepturi ipsa omnis tenetur, illo quos explicabo aspernatur quisquam non ab autem necessitatibus velit hic minima maxime ullam? Quod, praesentium totam, possimus ad quaerat odit deserunt, exercitationem quae inventore eveniet facilis odio non culpa commodi iure id delectus! Corrupti maxime at possimus nisi! Incidunt modi, dignissimos commodi soluta error alias et aperiam labore quas at eligendi molestiae temporibus! Unde, minus dolorum. Ea, nostrum mollitia? Doloremque rem officiis dolorum, quae corrupti harum consequuntur sequi, dolorem doloribus eum nam iure. Commodi modi, voluptatibus iste consequuntur sunt cupiditate possimus natus?', id:2},
-    ])
-    return { posts }
+    const posts = ref([])
+    const error = ref(null)
+
+    const load = async()=>{
+      try{
+        let data = await fetch('http://localhost:3000/post')
+        
+        if(!data.ok){
+          throw Error('no data available')
+        }
+        posts.value = await data.json()
+        console.log(posts.value)
+      }
+      catch(err){
+        error.value = err.message
+        console.log(err.message)
+      }
+    }
+    
+    load()
+    return { posts, error }
    
   }
 }
